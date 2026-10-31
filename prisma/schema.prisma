@@ -1,0 +1,171 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+enum BillRepeat {
+  NONE
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum PendingStatus {
+  PENDING
+  APPROVED
+  IGNORED
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String?  @unique
+  name          String
+  password      String
+  webhookSecret String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  wallet              Wallet?
+  categories          Category[]
+  transactions        Transaction[]
+  pendingTransactions PendingTransaction[]
+  bills               Bill[]
+
+  @@index([webhookSecret])
+  @@map("users")
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  name      String   @default("Ví chính")
+  balance   Float    @default(0)
+  currency  String   @default("VND")
+  color     String   @default("#10B981")
+  icon      String   @default("Wallet")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+
+  @@map("wallets")
+}
+
+model Category {
+  id        String       @id @default(cuid())
+  userId    String?      // null = hệ thống khởi tạo mặc định, string = danh mục do user tự tạo
+  name      String
+  type      CategoryType @default(EXPENSE)
+  icon      String       @default("Tag")
+  color     String       @default("#6B7280")
+  order     Int          @default(0)
+  isDefault Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  user         User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  bills        Bill[]
+
+  @@map("categories")
+}
+
+model Transaction {
+  id         String          @id @default(cuid())
+  userId     String
+  walletId   String
+  categoryId String
+  amount     Float
+  type       TransactionType
+  date       DateTime        @default(now())
+  note       String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet   Wallet   @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  billPayment BillPayment?
+
+  @@map("transactions")
+}
+
+model PendingTransaction {
+  id              String          @id @default(cuid())
+  userId          String
+  walletId        String?
+  amount          Float
+  type            TransactionType @default(EXPENSE)
+  bankName        String?
+  bankAccount     String?
+  transactionCode String?
+  content         String?
+  status          PendingStatus   @default(PENDING)
+  transactionId   String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@map("pending_transactions")
+}
+
+// Hóa đơn định kỳ (tiền nhà, điện nước, Netflix...). Trả hóa đơn = tạo 1 khoản CHI, không ghi nợ.
+model Bill {
+  id         String     @id @default(cuid())
+  userId     String
+  categoryId String
+  name       String
+  amount     Float
+  startDate  DateTime   // Ngày đến hạn đầu tiên (00:00 UTC của ngày theo lịch)
+  repeat     BillRepeat @default(MONTHLY)
+  endMonth   String?    // "YYYY-MM": tháng của kỳ cuối (null = không thời hạn)
+  note       String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  payments BillPayment[]
+
+  @@index([userId])
+  @@map("bills")
+}
+
+// Một kỳ hóa đơn đã trả, gắn với giao dịch chi tương ứng (xóa giao dịch = kỳ đó quay về "chưa trả")
+model BillPayment {
+  id            String   @id @default(cuid())
+  billId        String
+  userId        String
+  dueDate       DateTime // Kỳ đến hạn (00:00 UTC của ngày theo lịch)
+  transactionId String   @unique
+  createdAt     DateTime @default(now())
+
+  bill        Bill        @relation(fields: [billId], references: [id], onDelete: Cascade)
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@unique([billId, dueDate])
+  @@index([userId, dueDate])
+  @@map("bill_payments")
+}
