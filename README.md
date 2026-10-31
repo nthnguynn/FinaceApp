@@ -37,7 +37,7 @@ bun run dev                   # http://localhost:3005
 Ứng dụng không có trang đăng ký công khai. Tạo tài khoản bằng:
 
 ```bash
-bun scripts/create-user.ts <tên-đăng-nhập> <email> "<Họ và tên>"
+bun scripts/create-user.mjs <tên-đăng-nhập> <email> "<Họ và tên>"
 ```
 
 Dữ liệu mẫu cho môi trường dev (không chạy được trên production): `bun scripts/seed-demo.ts`.

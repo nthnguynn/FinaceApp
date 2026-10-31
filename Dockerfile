@@ -35,6 +35,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
+# Script tạo tài khoản: docker compose exec web node scripts/create-user.mjs ...
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/create-user.mjs ./scripts/create-user.mjs
 
 USER nextjs
 

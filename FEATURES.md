@@ -8,7 +8,7 @@ Tài liệu này ghi nhận toàn bộ định hướng tính năng của ứng 
 > *Mục tiêu: Đảm bảo luồng quản lý tài chính cơ bản cho người dùng.*
 
 ### 1.1 Quản Lý Tài Khoản & Xác Thực (User & Auth)
-- [x] Đăng nhập bằng Tên đăng nhập / Email + Mật khẩu (không có đăng ký công khai — tài khoản tạo bằng `bun scripts/create-user.ts`).
+- [x] Đăng nhập bằng Tên đăng nhập / Email + Mật khẩu (không có đăng ký công khai — tài khoản tạo bằng `bun scripts/create-user.mjs`).
 - [x] Quản lý thông tin cá nhân & đổi mật khẩu.
 
 ### 1.2 Quản Lý Ví & Tài Khoản Thanh Toán (Wallets / Accounts)
