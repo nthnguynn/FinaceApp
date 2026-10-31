@@ -16,6 +16,11 @@ const DEMO = { username: "admin", email: "admin@myfinance.test", name: "Admin", 
 if (process.env.NODE_ENV === "production") {
   throw new Error("Không chạy seed demo trên production.");
 }
+// Tài khoản admin/admin rất dễ đoán: chỉ cho seed vào DB ở chính máy này
+const dbHost = new URL(process.env.DATABASE_URL ?? "postgresql://localhost").hostname;
+if (!["localhost", "127.0.0.1", "::1"].includes(dbHost)) {
+  throw new Error(`Seed demo chỉ chạy với DB local (đang trỏ tới ${dbHost}).`);
+}
 
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }) });
 

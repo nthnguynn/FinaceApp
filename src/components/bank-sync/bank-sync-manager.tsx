@@ -216,11 +216,9 @@ export function BankSyncManager({
   const [customDomain, setCustomDomain] = useState<string>("");
   const [isEditingDomain, setIsEditingDomain] = useState(false);
 
+  // Domain công khai (NEXT_PUBLIC_APP_URL) hoặc chính domain đang mở app
   const defaultOrigin =
-    process.env.NEXT_PUBLIC_APP_URL ||
-    (typeof window !== "undefined" && window.location.origin && !window.location.origin.includes("localhost")
-      ? window.location.origin
-      : "https://financeapp.manh.pics");
+    process.env.NEXT_PUBLIC_APP_URL || (typeof window !== "undefined" ? window.location.origin : "");
   const activeOrigin = customDomain.trim() ? customDomain.trim().replace(/\/+$/, "") : defaultOrigin;
   const fullWebhookUrl = `${activeOrigin}/api/webhook/bank?secret=${webhookSecret}`;
 
@@ -535,13 +533,14 @@ export function BankSyncManager({
                       Tên miền gốc (Base URL / Ngrok URL):
                     </label>
                     <Input
-                      placeholder="VD: https://financeapp.manh.pics hoặc https://xxx.ngrok-free.app"
+                      placeholder="VD: https://moniii.ten-mien-cua-ban.com hoặc https://xxx.ngrok-free.app"
                       value={customDomain}
                       onChange={(e) => setCustomDomain(e.target.value)}
                       className="font-mono text-xs"
                     />
                     <p className="text-[10px] text-muted-foreground">
-                      💡 Mặc định hệ thống đã đặt domain chính thức của bạn là <strong>https://financeapp.manh.pics</strong>.
+                      💡 Mặc định dùng domain bạn đang mở app (<strong>{defaultOrigin}</strong>). Nếu đang chạy ở localhost, SePay
+                      không gọi tới được — hãy dùng domain đã deploy hoặc đường hầm ngrok.
                     </p>
                   </div>
                 )}
