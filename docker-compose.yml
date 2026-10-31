@@ -2,7 +2,7 @@ services:
   # Database PostgreSQL
   postgres:
     image: postgres:16-alpine
-    container_name: finance_db
+    container_name: moniii_db
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: finance_app
+    container_name: moniii_app
     restart: always
     ports:
       - "${APP_PORT:-3005}:3000"

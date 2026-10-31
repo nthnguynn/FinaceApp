@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { unstable_rethrow, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Loader2, Lock, User } from "lucide-react";
@@ -53,6 +53,8 @@ export function LoginForm() {
         setServerError(result.error || "Đăng nhập thất bại");
       }
     } catch (err) {
+      // loginAction gọi redirect() khi thành công: để Next tự xử lý điều hướng
+      unstable_rethrow(err);
       console.error(err);
       setServerError("Đã xảy ra lỗi không xác định. Vui lòng thử lại.");
     } finally {
