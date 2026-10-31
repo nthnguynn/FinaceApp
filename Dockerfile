@@ -13,7 +13,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate Prisma Client & Build Next.js
+# Generate Prisma Client & Build Next.js (standalone cho image gọn)
+ENV NEXT_OUTPUT=standalone
 RUN npx prisma generate
 RUN npm run build
 

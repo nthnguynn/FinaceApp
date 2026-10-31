@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Docker build bật standalone (xem Dockerfile); chạy thường thì dùng `next start`
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   devIndicators: false,
   allowedDevOrigins: [
     "localhost",
