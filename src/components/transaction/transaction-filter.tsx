@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { isInsidePopoverPortal } from "@/components/ui/picker-popover";
 import { CategoryData } from "@/actions/category";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/ui/date-picker";
@@ -117,6 +118,8 @@ export function TransactionFilter({
   // Đóng Dropdowns khi click ngoài
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      // Bấm trong popup chọn ngày (render ra ngoài) không phải là bấm ra ngoài bộ lọc
+      if (isInsidePopoverPortal(event.target)) return;
       if (
         categoryDropdownRef.current &&
         !categoryDropdownRef.current.contains(event.target as Node)

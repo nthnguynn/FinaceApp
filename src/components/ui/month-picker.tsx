@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useCallback, useState, useRef } from "react";
+import { PickerPopover } from "@/components/ui/picker-popover";
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 
 interface MonthPickerProps {
@@ -40,17 +41,7 @@ export function MonthPicker({ value, onChange }: MonthPickerProps) {
     setIsOpen(!isOpen);
   };
 
-  // Đóng Popover khi click ra ngoài (chỉ lắng nghe khi đang mở)
-  useEffect(() => {
-    if (!isOpen) return;
-    function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  const close = useCallback(() => setIsOpen(false), []);
 
   const handleSelectMonth = (monthIndex: number) => {
     const mStr = String(monthIndex + 1).padStart(2, "0");
@@ -64,7 +55,7 @@ export function MonthPicker({ value, onChange }: MonthPickerProps) {
       <button
         type="button"
         onClick={toggleOpen}
-        className="flex items-center justify-between gap-2.5 h-9 px-3.5 rounded-xl border border-border/80 bg-background hover:bg-muted/50 text-xs font-bold text-foreground transition-all cursor-pointer shadow-2xs focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className="flex items-center justify-between gap-2.5 h-10 px-3.5 rounded-xl border border-border/80 bg-background hover:bg-muted/50 text-xs font-bold text-foreground transition-all cursor-pointer shadow-2xs focus:outline-none focus:ring-2 focus:ring-primary/20"
       >
         <div className="flex items-center gap-2">
           <CalendarIcon className="h-4 w-4 text-primary shrink-0" />
@@ -80,14 +71,14 @@ export function MonthPicker({ value, onChange }: MonthPickerProps) {
       </button>
 
       {/* Popover Bảng chọn Tháng & Năm */}
-      {isOpen && (
-        <div className="absolute right-0 sm:left-0 top-full mt-2 w-64 rounded-2xl border border-border/60 bg-card text-card-foreground shadow-2xl backdrop-blur-md p-4 z-50 animate-in fade-in-0 zoom-in-95">
+      <PickerPopover anchorRef={containerRef} open={isOpen} onClose={close} width={272} label="Chọn tháng">
           {/* Header chọn Năm */}
           <div className="flex items-center justify-between pb-3 border-b border-border/40">
             <button
               type="button"
               onClick={() => setViewYear(viewYear - 1)}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+              aria-label="Năm trước"
+              className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -97,7 +88,8 @@ export function MonthPicker({ value, onChange }: MonthPickerProps) {
             <button
               type="button"
               onClick={() => setViewYear(viewYear + 1)}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+              aria-label="Năm sau"
+              className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -129,8 +121,7 @@ export function MonthPicker({ value, onChange }: MonthPickerProps) {
               );
             })}
           </div>
-        </div>
-      )}
+      </PickerPopover>
     </div>
   );
 }

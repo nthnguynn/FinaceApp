@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useCallback, useState, useRef } from "react";
+import { PickerPopover } from "@/components/ui/picker-popover";
 import {
   Calendar as CalendarIcon,
   ChevronLeft,
@@ -59,17 +60,7 @@ export function DatePicker({
     setIsOpen(!isOpen);
   };
 
-  // Click ra ngoài tự đóng Lịch (chỉ lắng nghe khi đang mở)
-  useEffect(() => {
-    if (!isOpen) return;
-    function handleClickOutside(event: MouseEvent) {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  const close = useCallback(() => setIsOpen(false), []);
 
   const prevMonth = () => {
     setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1));
@@ -135,17 +126,13 @@ export function DatePicker({
       </button>
 
       {/* Popover Lịch Bật lên Phía dưới / Trên tùy chọn */}
-      {isOpen && (
-        <div
-          className={`absolute right-0 sm:left-0 ${position === "top" ? "bottom-full mb-2" : "top-full mt-2"
-            } w-72 rounded-2xl border border-border/60 bg-card text-card-foreground shadow-2xl backdrop-blur-md p-4 z-50 animate-in fade-in-0 zoom-in-95`}
-        >
+      <PickerPopover anchorRef={containerRef} open={isOpen} onClose={close} width={296} prefer={position} label="Chọn ngày">
           {/* Header Tháng / Năm & Nút điều hướng */}
           <div className="flex items-center justify-between pb-3 border-b border-border/40">
             <button
               type="button"
               onClick={prevMonth}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              aria-label="Tháng trước" className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -155,7 +142,7 @@ export function DatePicker({
             <button
               type="button"
               onClick={nextMonth}
-              className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              aria-label="Tháng sau" className="flex size-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -186,7 +173,7 @@ export function DatePicker({
                   key={day}
                   type="button"
                   onClick={() => selectDay(day)}
-                  className={`h-8 w-8 rounded-xl text-xs font-semibold flex items-center justify-center transition-all ${isSelected
+                  className={`h-9 w-full rounded-xl text-sm font-semibold flex items-center justify-center transition-all ${isSelected
                       ? "bg-primary text-primary-foreground font-bold shadow-md scale-105"
                       : isToday
                         ? "border border-primary text-primary font-bold hover:bg-primary/10"
@@ -198,8 +185,7 @@ export function DatePicker({
               );
             })}
           </div>
-        </div>
-      )}
+      </PickerPopover>
     </div>
   );
 }
