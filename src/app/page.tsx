@@ -89,31 +89,31 @@ function donutGradient() {
 function ProductPreview() {
   return (
     <figure className="relative">
-      <div className="rounded-3xl border border-border bg-card p-5 pb-16 shadow-[0_30px_80px_-30px_color-mix(in_oklch,var(--primary)_45%,transparent)] sm:p-6 sm:pb-16">
+      <div className="rounded-3xl border border-border bg-card p-4 pb-16 shadow-[0_30px_80px_-30px_color-mix(in_oklch,var(--primary)_45%,transparent)] sm:p-6 sm:pb-16">
         <div className="flex items-center justify-between">
           <p className="text-sm font-semibold">Tổng quan tháng này</p>
           <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">Tháng này</span>
         </div>
 
-        <div className="mt-5 grid grid-cols-3 gap-3 text-sm">
+        <div className="mt-5 grid grid-cols-3 gap-2 text-xs sm:gap-3 sm:text-sm">
           <div>
             <p className="text-muted-foreground">Số dư</p>
-            <p className="mt-1 font-bold">12.450.000 ₫</p>
+            <p className="mt-1 whitespace-nowrap font-bold">12.450.000</p>
           </div>
           <div>
             <p className="text-muted-foreground">Thu</p>
-            <p className="mt-1 font-bold text-emerald-600 dark:text-emerald-400">+18.000.000</p>
+            <p className="mt-1 whitespace-nowrap font-bold text-emerald-600 dark:text-emerald-400">+18.000.000</p>
           </div>
           <div>
             <p className="text-muted-foreground">Chi</p>
-            <p className="mt-1 font-bold text-rose-600 dark:text-rose-400">−5.550.000</p>
+            <p className="mt-1 whitespace-nowrap font-bold text-rose-600 dark:text-rose-400">−5.550.000</p>
           </div>
         </div>
 
-        <div className="mt-6 flex items-center gap-6 border-t border-border/70 pt-6">
+        <div className="mt-6 flex items-center gap-4 border-t border-border/70 pt-6 min-[380px]:gap-6">
           <div
             aria-hidden
-            className="relative size-28 shrink-0 rounded-full"
+            className="relative size-24 shrink-0 rounded-full min-[380px]:size-28"
             style={{ background: donutGradient() }}
           >
             <div className="absolute inset-4 rounded-full bg-card" />
@@ -177,7 +177,7 @@ export default async function HomePage() {
 
       <main className="relative z-10">
         {/* Hero */}
-        <section className="mx-auto grid max-w-6xl items-center gap-14 px-4 pb-24 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pb-32 lg:pt-20">
+        <section className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 px-4 pb-24 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-16 lg:pb-32 lg:pt-20">
           <div className="animate-rise-in">
             <h1 className="text-4xl font-extrabold leading-[1.1] tracking-[-0.02em] text-balance sm:text-5xl lg:text-[3.5rem]">
               Quản lý thu chi gọn gàng, đồng bộ cùng tài khoản ngân hàng.
@@ -221,7 +221,7 @@ export default async function HomePage() {
               Không cần bảng tính. Ghi tay khi cần, để ngân hàng tự báo khi có thể.
             </p>
 
-            <ul className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-14 grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
               {FEATURES.map(({ icon: Icon, title, text }) => (
                 <li key={title} className="border-t border-border pt-6">
                   <Icon className="size-5 text-primary" aria-hidden />
@@ -235,7 +235,7 @@ export default async function HomePage() {
 
         {/* Đồng bộ ngân hàng */}
         <section id="dong-bo" className="scroll-mt-8">
-          <div className="mx-auto grid max-w-6xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:py-24">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-20 lg:py-24">
             <div>
               <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
                 Đồng bộ ngân hàng trong ba bước

@@ -7,6 +7,7 @@ import { TransactionFilter } from "@/components/transaction/transaction-filter";
 import { TransactionList } from "@/components/transaction/transaction-list";
 import { TransactionDialog } from "@/components/transaction/transaction-dialog";
 import { QuickTextEntry } from "@/components/transaction/quick-text-entry";
+import { StatList } from "@/components/ui/stat-list";
 import { Button } from "@/components/ui/button";
 import {
   Plus,
@@ -246,7 +247,7 @@ export function TransactionManager({
   return (
     <div className="space-y-5 sm:space-y-6">
       {/* 1. Thanh Điều Hướng Quản Lý Theo Tháng - Chuẩn 1 hàng ngang tinh tế trên điện thoại */}
-      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+      <div className="relative flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         {/* Left: Cụm điều hướng Tháng / Năm */}
         <div className="flex items-center gap-1 sm:gap-1.5 min-w-0">
           {viewMode === "MONTH" ? (
@@ -262,7 +263,7 @@ export function TransactionManager({
               </button>
 
               {/* Nút Bấm Mở Popover Chọn Tháng / Năm */}
-              <div className="relative" ref={monthPickerRef}>
+              <div className="sm:relative" ref={monthPickerRef}>
                 <button
                   type="button"
                   onClick={() => {
@@ -285,7 +286,7 @@ export function TransactionManager({
 
                 {/* Popover chọn Tháng / Năm */}
                 {isMonthPickerOpen && (
-                  <div className="absolute left-0 top-full mt-2 z-50 w-72 rounded-3xl bg-card border border-border/80 p-3.5 shadow-2xl animate-in fade-in-0 zoom-in-95">
+                  <div className="absolute inset-x-0 top-full mt-2 z-50 rounded-3xl sm:inset-x-auto sm:left-0 sm:w-72 bg-card border border-border/80 p-3.5 shadow-2xl animate-in fade-in-0 zoom-in-95">
                     {/* Header chọn Năm */}
                     <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-border/50">
                       <Button
@@ -391,7 +392,7 @@ export function TransactionManager({
           <button
             type="button"
             onClick={() => handleChangeViewMode("MONTH")}
-            className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-colors cursor-pointer whitespace-nowrap ${
+            className={`px-3.5 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold transition-colors cursor-pointer whitespace-nowrap ${
               viewMode === "MONTH"
                 ? "bg-card text-foreground shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -402,7 +403,7 @@ export function TransactionManager({
           <button
             type="button"
             onClick={() => handleChangeViewMode("ALL")}
-            className={`px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold transition-colors cursor-pointer whitespace-nowrap ${
+            className={`px-3.5 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold transition-colors cursor-pointer whitespace-nowrap ${
               viewMode === "ALL"
                 ? "bg-card text-foreground shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -414,31 +415,26 @@ export function TransactionManager({
       </div>
 
       {/* 2. Tổng thu / chi / chênh lệch */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-        {[
-          { label: "Thu", value: `+${formatVND(totalIncome)}`, tone: "text-emerald-600 dark:text-emerald-400", icon: TrendingUp },
-          { label: "Chi", value: `-${formatVND(totalExpense)}`, tone: "text-rose-600 dark:text-rose-400", icon: TrendingDown },
+      <StatList
+        columns={3}
+        items={[
+          { label: "Thu", value: `+${formatVND(totalIncome)}`, tone: "text-emerald-600 dark:text-emerald-400", icon: TrendingUp, iconTone: "bg-emerald-500/12 text-emerald-600 dark:text-emerald-400" },
+          { label: "Chi", value: `-${formatVND(totalExpense)}`, tone: "text-rose-600 dark:text-rose-400", icon: TrendingDown, iconTone: "bg-rose-500/12 text-rose-600 dark:text-rose-400" },
           {
             label: "Chênh lệch",
-            value: `${totalIncome - totalExpense >= 0 ? "+" : ""}${formatVND(totalIncome - totalExpense)}`,
+            value: `${totalIncome - totalExpense >= 0 ? "+" : "-"}${formatVND(Math.abs(totalIncome - totalExpense))}`,
             tone: totalIncome - totalExpense >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400",
             icon: ArrowUpDown,
+            iconTone: "bg-primary/12 text-primary",
           },
-        ].map(({ label, value, tone, icon: Icon }) => (
-          <div key={label} className="min-w-0 rounded-3xl border border-border bg-card p-4 shadow-xs last:col-span-2 sm:p-5 sm:last:col-span-1">
-            <p className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground sm:text-sm">
-              <Icon className="size-4 shrink-0" aria-hidden /> {label}
-            </p>
-            <p className={`mt-1.5 truncate text-lg font-extrabold sm:text-xl ${tone}`}>{value}</p>
-          </div>
-        ))}
-      </div>
+        ]}
+      />
 
       <QuickTextEntry categories={categories} onCreated={() => fetchTransactions()} />
 
       {/* 3. Action Buttons & Filter */}
       <div className="space-y-3">
-        <div className="hidden justify-end md:flex">
+        <div className="hidden justify-end lg:flex">
           <Button onClick={handleCreate} className="h-11 gap-2 rounded-full px-5 text-sm font-bold shadow-md shadow-primary/25 cursor-pointer">
             <Plus className="size-4" /> Thêm giao dịch
           </Button>
@@ -472,7 +468,7 @@ export function TransactionManager({
       <button
         type="button"
         onClick={handleCreate}
-        className="fixed bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-hero px-5 text-base font-bold text-hero-foreground shadow-xl md:hidden cursor-pointer"
+        className="fixed bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-hero px-5 text-base font-bold text-hero-foreground shadow-xl lg:hidden cursor-pointer"
       >
         <Plus className="size-5" /> Thêm
       </button>

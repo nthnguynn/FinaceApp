@@ -18,7 +18,7 @@ export function PageHeader({ title, description, back, actions, className }: Pag
         {back && (
           <Link
             href={back.href}
-            className="mb-2 inline-flex items-center gap-1 rounded-lg text-sm font-semibold text-muted-foreground hover:text-foreground"
+            className="-ml-1.5 mb-1 inline-flex items-center gap-1 rounded-lg px-1.5 py-1.5 text-sm font-semibold text-muted-foreground hover:text-foreground"
           >
             <ChevronLeft className="size-4" aria-hidden />
             {back.label}

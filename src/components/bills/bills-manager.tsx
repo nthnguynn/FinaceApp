@@ -16,6 +16,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { MonthSwitcher } from "@/components/ui/month-switcher";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionLabel } from "@/components/ui/section-label";
+import { StatList } from "@/components/ui/stat-list";
 import { toast } from "@/components/ui/toast";
 import { BillDialog } from "@/components/bills/bill-dialog";
 import { keyToUTC, parseDateKey, REPEAT_LABELS } from "@/lib/bills";
@@ -143,7 +144,7 @@ export function BillsManager({ today, initialBills, initialPlans, categories }: 
           <button
             type="button"
             onClick={openAdd}
-            className="hidden h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/25 hover:bg-primary/90 md:inline-flex cursor-pointer"
+            className="hidden h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/25 hover:bg-primary/90 lg:inline-flex cursor-pointer"
           >
             <Plus className="size-4" /> Thêm hóa đơn
           </button>
@@ -205,7 +206,7 @@ export function BillsManager({ today, initialBills, initialPlans, categories }: 
       <button
         type="button"
         onClick={openAdd}
-        className="fixed bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-hero px-5 text-base font-bold text-hero-foreground shadow-xl md:hidden cursor-pointer"
+        className="fixed bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-hero px-5 text-base font-bold text-hero-foreground shadow-xl lg:hidden cursor-pointer"
       >
         <Plus className="size-5" /> Thêm hóa đơn
       </button>
@@ -268,22 +269,18 @@ function MonthlyView({ today, view, bills, loading, busy, onShift, onToggle, onA
         <MonthSwitcher year={view.year} month={view.month} onChange={onShift} />
       </div>
 
-      <div className="grid grid-cols-3 gap-2 sm:gap-4">
-        {[
-          { label: "Cần trả", value: totalDue, tone: "text-foreground" },
-          { label: "Đã trả", value: totalPaid, tone: "text-emerald-600 dark:text-emerald-400" },
+      <StatList
+        columns={3}
+        items={[
+          { label: "Cần trả", value: formatVND(totalDue) },
+          { label: "Đã trả", value: formatVND(totalPaid), tone: "text-emerald-600 dark:text-emerald-400" },
           {
             label: "Còn lại",
-            value: remaining,
+            value: formatVND(remaining),
             tone: remaining > 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400",
           },
-        ].map(({ label, value, tone }) => (
-          <div key={label} className="min-w-0 rounded-3xl border border-border bg-card p-3 text-center shadow-xs sm:p-5">
-            <p className="text-xs font-semibold text-muted-foreground sm:text-sm">{label}</p>
-            <p className={cn("mt-1 truncate text-sm font-extrabold sm:text-xl", tone)}>{formatVND(value)}</p>
-          </div>
-        ))}
-      </div>
+        ]}
+      />
 
       <BillCalendar today={today} view={view} groups={groups} />
 
@@ -336,7 +333,7 @@ function MonthlyView({ today, view, bills, loading, busy, onShift, onToggle, onA
                           disabled={busy === id}
                           onClick={() => onToggle(bill)}
                           aria-label={bill.paid ? `Bỏ đánh dấu đã trả ${bill.name}` : `Đánh dấu đã trả ${bill.name}`}
-                          className="mt-0.5 shrink-0 self-start transition-transform active:scale-90 disabled:opacity-50 cursor-pointer"
+                          className="-m-1.5 shrink-0 self-start rounded-full p-1.5 transition-transform active:scale-90 disabled:opacity-50 cursor-pointer"
                         >
                           {bill.paid ? (
                             <CheckCircle2 className="size-6 text-emerald-500" />
@@ -348,7 +345,7 @@ function MonthlyView({ today, view, bills, loading, busy, onShift, onToggle, onA
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                              <p className={cn("truncate text-sm font-bold", bill.paid && "text-muted-foreground line-through")}>
+                              <p className={cn("line-clamp-2 text-sm font-bold leading-snug", bill.paid && "text-muted-foreground line-through")}>
                                 {bill.name}{" "}
                                 <span className="font-semibold text-muted-foreground no-underline">
                                   (Kỳ {bill.seq}
@@ -364,7 +361,7 @@ function MonthlyView({ today, view, bills, loading, busy, onShift, onToggle, onA
                             </div>
                             <p
                               className={cn(
-                                "shrink-0 text-base font-extrabold",
+                                "shrink-0 whitespace-nowrap text-base font-extrabold",
                                 bill.paid ? "text-muted-foreground line-through" : late ? "text-rose-600 dark:text-rose-400" : "text-foreground"
                               )}
                             >

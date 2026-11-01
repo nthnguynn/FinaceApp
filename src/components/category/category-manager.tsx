@@ -117,7 +117,7 @@ export function CategoryManager({ initialCategories, onRefresh }: CategoryManage
           <button
             type="button"
             onClick={() => setActiveTab("EXPENSE")}
-            className={`flex-1 sm:flex-none px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+            className={`flex-1 sm:flex-none px-3.5 py-2.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "EXPENSE"
                 ? "bg-rose-500 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -128,7 +128,7 @@ export function CategoryManager({ initialCategories, onRefresh }: CategoryManage
           <button
             type="button"
             onClick={() => setActiveTab("INCOME")}
-            className={`flex-1 sm:flex-none px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
+            className={`flex-1 sm:flex-none px-3.5 py-2.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
               activeTab === "INCOME"
                 ? "bg-emerald-500 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground"

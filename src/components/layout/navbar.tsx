@@ -55,12 +55,12 @@ export function Navbar({ userName }: NavbarProps) {
 
   return (
     <>
-      <header className="relative z-40 w-full md:sticky md:top-0 md:border-b md:border-border/60 md:bg-background/85 md:backdrop-blur">
+      <header className="relative z-40 w-full lg:sticky lg:top-0 lg:border-b lg:border-border/60 lg:bg-background/85 lg:backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
           <BrandLogo href="/dashboard" size="md" />
 
           {/* Máy tính: tab dạng viên thuốc */}
-          <nav aria-label="Điều hướng chính" className="hidden items-center gap-1 rounded-full border border-border bg-card p-1 shadow-xs md:flex">
+          <nav aria-label="Điều hướng chính" className="hidden items-center gap-1 rounded-full border border-border bg-card p-1 shadow-xs lg:flex">
             {tabs.map((tab) => {
               const active = isActiveTab(pathname, tab);
               const Icon = tab.icon;
@@ -70,11 +70,12 @@ export function Navbar({ userName }: NavbarProps) {
                   href={tab.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors",
+                    "flex items-center gap-2 whitespace-nowrap rounded-full px-3 py-2 text-sm font-semibold transition-colors",
                     active ? "bg-primary/12 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
                 >
-                  <Icon className="size-4" aria-hidden />
+                  {/* 1024–1279px: chỉ chữ để 6 tab vừa một hàng */}
+                  <Icon className="hidden size-4 xl:block" aria-hidden />
                   {tab.label}
                   {tab.badge && <Badge count={tab.badge} />}
                 </Link>
@@ -84,7 +85,7 @@ export function Navbar({ userName }: NavbarProps) {
 
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <UserNavDropdown userName={userName} />
             </div>
           </div>
@@ -94,9 +95,9 @@ export function Navbar({ userName }: NavbarProps) {
       {/* Điện thoại: thanh tab nổi ở đáy */}
       <nav
         aria-label="Điều hướng chính"
-        className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 rounded-[1.75rem] border border-border bg-card/95 p-1.5 shadow-[0_10px_40px_-12px_rgb(0_0_0/0.28)] backdrop-blur md:hidden"
+        className="fixed inset-x-2 bottom-[max(0.5rem,env(safe-area-inset-bottom))] z-50 rounded-[1.75rem] border border-border bg-card/95 p-1 min-[380px]:inset-x-3 min-[380px]:p-1.5 shadow-[0_10px_40px_-12px_rgb(0_0_0/0.28)] backdrop-blur lg:hidden"
       >
-        <div className="grid grid-cols-6 gap-0.5">
+        <div className="grid grid-cols-6">
           {tabs.map((tab) => {
             const active = isActiveTab(pathname, tab);
             const Icon = tab.icon;
@@ -106,12 +107,12 @@ export function Navbar({ userName }: NavbarProps) {
                 href={tab.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative flex flex-col items-center gap-0.5 rounded-[1.25rem] py-2 text-[10.5px] font-semibold tracking-tight transition-colors",
+                  "relative flex min-w-0 flex-col items-center gap-0.5 rounded-[1.25rem] py-2 text-[10px] font-semibold tracking-[-0.04em] transition-colors min-[380px]:text-[11px] min-[380px]:tracking-tight",
                   active ? "bg-primary/12 text-primary" : "text-muted-foreground"
                 )}
               >
                 <Icon className="size-5" aria-hidden />
-                <span className="max-w-full truncate px-0.5">{tab.label}</span>
+                <span className="max-w-full truncate">{tab.label}</span>
                 {tab.badge && <Badge count={tab.badge} className="absolute right-[12%] top-1" />}
               </Link>
             );

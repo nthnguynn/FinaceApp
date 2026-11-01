@@ -246,7 +246,7 @@ export function BankSimulatorDialog({ isOpen, onClose, onSuccess }: BankSimulato
               <Input
                 id="sim-content"
                 placeholder="VD: Chuyen khoan tien an trua..."
-                className="pl-10 text-sm"
+                className="pl-10 text-base sm:text-sm"
                 {...register("content")}
               />
             </div>

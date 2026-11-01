@@ -277,7 +277,7 @@ export function PendingTransactionsProvider({ children }: { children: React.Reac
                     e.stopPropagation();
                     dismissNotification(tx.id);
                   }}
-                  className="p-1.5 rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-all shrink-0"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors"
                   aria-label="Đóng thông báo"
                 >
                   <X className="h-4 w-4" />

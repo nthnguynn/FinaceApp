@@ -1,7 +1,8 @@
 "use client";
 
 import { PiggyBank, TrendingDown, TrendingUp, Wallet } from "lucide-react";
-import { cn, formatVND } from "@/lib/utils";
+import { StatList } from "@/components/ui/stat-list";
+import { formatVND } from "@/lib/utils";
 
 interface StatCardsProps {
   walletBalance: number;
@@ -11,46 +12,37 @@ interface StatCardsProps {
 }
 
 export function StatCards({ walletBalance, totalIncome, totalExpense, netSavings }: StatCardsProps) {
-  const savingRate = totalIncome > 0 ? Math.round((netSavings / totalIncome) * 100) : null;
-
-  const items = [
-    { label: "Số dư ví", value: formatVND(walletBalance), icon: Wallet, tone: "text-foreground", tile: "bg-primary/12 text-primary" },
-    {
-      label: "Thu nhập",
-      value: `+${formatVND(totalIncome)}`,
-      icon: TrendingUp,
-      tone: "text-emerald-600 dark:text-emerald-400",
-      tile: "bg-emerald-500/12 text-emerald-600 dark:text-emerald-400",
-    },
-    {
-      label: "Chi tiêu",
-      value: `-${formatVND(totalExpense)}`,
-      icon: TrendingDown,
-      tone: "text-rose-600 dark:text-rose-400",
-      tile: "bg-rose-500/12 text-rose-600 dark:text-rose-400",
-    },
-    {
-      label: savingRate !== null ? `Để dành được · ${savingRate}%` : "Để dành được",
-      value: `${netSavings >= 0 ? "+" : ""}${formatVND(netSavings)}`,
-      icon: PiggyBank,
-      tone: netSavings >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400",
-      tile: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
-    },
-  ];
+  const saving = netSavings >= 0;
+  const savingRate = saving && totalIncome > 0 ? Math.round((netSavings / totalIncome) * 100) : null;
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
-      {items.map(({ label, value, icon: Icon, tone, tile }) => (
-        <div key={label} className="rounded-3xl border border-border bg-card p-4 shadow-xs sm:p-5">
-          <div className="flex items-center gap-2">
-            <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-xl", tile)}>
-              <Icon className="size-4" aria-hidden />
-            </span>
-            <p className="truncate text-sm font-semibold text-muted-foreground">{label}</p>
-          </div>
-          <p className={cn("mt-3 truncate text-lg font-extrabold tracking-tight sm:text-xl", tone)}>{value}</p>
-        </div>
-      ))}
-    </div>
+    <StatList
+      columns={4}
+      items={[
+        { label: "Số dư ví", value: formatVND(walletBalance), icon: Wallet, iconTone: "bg-primary/12 text-primary" },
+        {
+          label: "Thu nhập",
+          value: `+${formatVND(totalIncome)}`,
+          tone: "text-emerald-600 dark:text-emerald-400",
+          icon: TrendingUp,
+          iconTone: "bg-emerald-500/12 text-emerald-600 dark:text-emerald-400",
+        },
+        {
+          label: "Chi tiêu",
+          value: `-${formatVND(totalExpense)}`,
+          tone: "text-rose-600 dark:text-rose-400",
+          icon: TrendingDown,
+          iconTone: "bg-rose-500/12 text-rose-600 dark:text-rose-400",
+        },
+        {
+          // Chi nhiều hơn thu: nói thẳng "chi vượt thu" thay vì tỉ lệ để dành âm
+          label: saving ? (savingRate !== null ? `Để dành được · ${savingRate}%` : "Để dành được") : "Chi vượt thu",
+          value: `${saving ? "+" : "-"}${formatVND(Math.abs(netSavings))}`,
+          tone: saving ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400",
+          icon: PiggyBank,
+          iconTone: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+        },
+      ]}
+    />
   );
 }

@@ -122,7 +122,7 @@ export function BillDialog({ isOpen, bill, categories, defaultDate, onClose, onS
         className="relative flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[2rem] bg-card shadow-2xl animate-sheet-up sm:max-h-[90dvh] sm:max-w-md sm:rounded-[2rem] sm:animate-in sm:fade-in-0 sm:zoom-in-95"
       >
         <form onSubmit={submit} className="flex min-h-0 flex-1 flex-col">
-          <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 pb-4 pt-5 sm:px-6">
+          <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 pb-4 pt-5 short:space-y-3.5 short:pt-4 sm:px-6">
             <div className="flex items-center justify-between gap-3">
               <h2 id="bill-dialog-title" className="text-xl font-extrabold tracking-tight">
                 {bill ? "Sửa hóa đơn" : "Thêm hóa đơn"}
@@ -294,7 +294,7 @@ export function BillDialog({ isOpen, bill, categories, defaultDate, onClose, onS
             <button
               type="submit"
               disabled={saving}
-              className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-hero text-base font-bold text-hero-foreground shadow-lg disabled:opacity-70 cursor-pointer"
+              className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-hero text-base font-bold text-hero-foreground shadow-lg disabled:opacity-70 short:h-12 cursor-pointer"
             >
               {saving ? (
                 <>

@@ -79,7 +79,7 @@ export function ChangePasswordForm() {
             <button
               type="button"
               onClick={() => setShowCurrentPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+              className="absolute right-1 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
               title={showCurrentPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
             >
@@ -110,7 +110,7 @@ export function ChangePasswordForm() {
             <button
               type="button"
               onClick={() => setShowNewPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+              className="absolute right-1 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
               title={showNewPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
             >
@@ -141,7 +141,7 @@ export function ChangePasswordForm() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1"
+              className="absolute right-1 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground transition-colors"
               tabIndex={-1}
               title={showConfirmPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
             >

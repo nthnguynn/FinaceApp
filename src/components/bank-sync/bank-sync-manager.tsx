@@ -39,10 +39,10 @@ import {
 type StatusFilter = "PENDING" | "APPROVED" | "IGNORED" | "ALL";
 
 const STATUS_FILTERS: { id: StatusFilter; label: string; icon: typeof Clock }[] = [
-  { id: "PENDING", label: "Chờ Duyệt", icon: Clock },
-  { id: "APPROVED", label: "Đã Tạo Hóa Đơn", icon: CheckCircle2 },
-  { id: "IGNORED", label: "Đã Bỏ Qua", icon: Ban },
-  { id: "ALL", label: "Tất Cả", icon: Layers },
+  { id: "PENDING", label: "Chờ duyệt", icon: Clock },
+  { id: "APPROVED", label: "Đã ghi sổ", icon: CheckCircle2 },
+  { id: "IGNORED", label: "Bỏ qua", icon: Ban },
+  { id: "ALL", label: "Tất cả", icon: Layers },
 ];
 
 interface BankSyncManagerProps {
@@ -239,6 +239,17 @@ export function BankSyncManager({
       <PageHeader
         title="Ngân hàng"
         description="Biến động số dư từ Vietcombank, MBBank, ACB… về một hộp thư. Duyệt 1 chạm để ghi sổ."
+        actions={
+          <button
+            type="button"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            aria-label="Làm mới"
+            className="flex size-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-xs hover:text-foreground disabled:opacity-60 cursor-pointer"
+          >
+            <RefreshCw className={`size-4 ${refreshing ? "animate-spin" : ""}`} />
+          </button>
+        }
       />
 
       {/* Main Tab Navigation - Lưới 2 cột trên điện thoại */}
@@ -283,8 +294,8 @@ export function BankSyncManager({
       {activeTab === "INBOX" && (
         <div className="space-y-3.5 sm:space-y-4">
           {/* Sub Filters - Cuộn ngang mượt mà trên mobile */}
-          <div className="flex items-center justify-between gap-2 bg-card p-2 sm:p-2.5 rounded-full border border-border shadow-xs overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-1 shrink-0">
+          <div className="rounded-2xl bg-muted p-1 sm:inline-block">
+            <div className="grid grid-cols-4 gap-1 sm:flex">
               {STATUS_FILTERS.map((f) => {
                 const Icon = f.icon;
                 const isSelected = statusFilter === f.id;
@@ -293,30 +304,18 @@ export function BankSyncManager({
                     key={f.id}
                     type="button"
                     onClick={() => handleStatusFilterChange(f.id)}
-                    className={`flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
-                      isSelected
-                        ? "bg-primary/15 text-primary border border-primary/30"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    aria-pressed={isSelected}
+                    className={`flex items-center justify-center gap-1.5 px-1 sm:px-3.5 py-2 rounded-xl text-[11px] min-[380px]:text-xs font-bold transition-colors cursor-pointer whitespace-nowrap ${
+                      isSelected ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
                     }`}
                   >
-                    <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                    <Icon className="hidden size-3.5 sm:block" aria-hidden />
                     {f.label}
                   </button>
                 );
               })}
             </div>
 
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-              disabled={refreshing}
-              className="text-[11px] sm:text-xs font-semibold rounded-xl h-8 px-2.5 shrink-0"
-            >
-              <RefreshCw className={`h-3 w-3 sm:h-3.5 sm:w-3.5 mr-1 ${refreshing ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">Làm mới</span>
-            </Button>
           </div>
 
           {/* List of Pending Transactions */}
@@ -433,10 +432,10 @@ export function BankSyncManager({
                     </div>
 
                     {/* Right / Bottom: Amount & Action Buttons */}
-                    <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40 shrink-0">
+                    <div className="flex flex-wrap items-center justify-between sm:justify-end gap-x-3 gap-y-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-border/40 shrink-0">
                       <div className="text-left sm:text-right">
                         <div
-                          className={`text-base sm:text-lg font-black tracking-tight ${
+                          className={`whitespace-nowrap text-base sm:text-lg font-black tracking-tight ${
                             isExpense
                               ? "text-rose-600 dark:text-rose-400"
                               : "text-emerald-600 dark:text-emerald-400"
@@ -447,14 +446,14 @@ export function BankSyncManager({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-1.5">
+                      <div className="ml-auto flex items-center gap-1.5">
                         {isPending && (
                           <>
                             <Button
                               type="button"
                               size="sm"
                               onClick={() => openQuickProcess(tx)}
-                              className={`h-8 sm:h-9 px-2.5 sm:px-3 rounded-xl text-xs font-bold text-white shadow-xs cursor-pointer ${
+                              className={`h-9 px-3 rounded-xl text-xs font-bold text-white shadow-xs cursor-pointer ${
                                 isExpense
                                   ? "bg-rose-500 hover:bg-rose-600"
                                   : "bg-emerald-600 hover:bg-emerald-700"
@@ -468,7 +467,7 @@ export function BankSyncManager({
                               variant="outline"
                               size="sm"
                               onClick={() => handleIgnore(tx.id)}
-                              className="h-8 sm:h-9 w-8 sm:w-9 p-0 rounded-xl text-xs font-semibold text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0 cursor-pointer"
+                              className="size-9 p-0 rounded-xl text-xs font-semibold text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0 cursor-pointer"
                               title="Bỏ qua"
                             >
                               <Ban className="h-3.5 w-3.5" />
@@ -481,7 +480,7 @@ export function BankSyncManager({
                           variant="ghost"
                           size="sm"
                           onClick={() => setItemToDelete(tx)}
-                          className="h-8 sm:h-9 w-8 sm:w-9 p-0 rounded-xl text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0 cursor-pointer"
+                          className="size-9 p-0 rounded-xl text-xs text-muted-foreground hover:text-destructive hover:bg-destructive/10 shrink-0 cursor-pointer"
                           title="Xóa"
                         >
                           <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -536,7 +535,7 @@ export function BankSyncManager({
                       placeholder="VD: https://moniii.ten-mien-cua-ban.com hoặc https://xxx.ngrok-free.app"
                       value={customDomain}
                       onChange={(e) => setCustomDomain(e.target.value)}
-                      className="font-mono text-xs"
+                      className="font-mono text-base sm:text-xs"
                     />
                     <p className="text-[10px] text-muted-foreground">
                       💡 Mặc định dùng domain bạn đang mở app (<strong>{defaultOrigin}</strong>). Nếu đang chạy ở localhost, SePay
@@ -549,7 +548,7 @@ export function BankSyncManager({
                   <Input
                     readOnly
                     value={fullWebhookUrl}
-                    className="font-mono text-xs bg-muted/60 min-w-0 flex-1"
+                    className="font-mono text-base sm:text-xs bg-muted/60 min-w-0 flex-1"
                   />
                   <Button
                     type="button"
@@ -575,7 +574,7 @@ export function BankSyncManager({
                     readOnly
                     type={showSecret ? "text" : "password"}
                     value={webhookSecret || "Đang tải..."}
-                    className="font-mono text-xs bg-muted/60 min-w-0 flex-1"
+                    className="font-mono text-base sm:text-xs bg-muted/60 min-w-0 flex-1"
                   />
                   <Button
                     type="button"

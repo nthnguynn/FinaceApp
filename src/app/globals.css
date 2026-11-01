@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+/* Màn hình thấp (iPhone SE, điện thoại xoay ngang): thu gọn bảng nhập */
+@custom-variant short (@media (max-height: 700px));
 
 @theme inline {
   --color-background: var(--background);

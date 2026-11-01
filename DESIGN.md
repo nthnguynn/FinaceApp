@@ -140,6 +140,18 @@ apple-icon.png 180, icon-192/512, icon-maskable-512). Wordmark viết thường 
   Trả hóa đơn = 1 khoản chi; hóa đơn chưa trả chỉ là lời nhắc.
 - Lưới nhiều cột luôn dùng `minmax(0, …)` để nội dung không xuống dòng không làm tràn ngang trên di động.
 
+### Responsive (đã kiểm tra ở 320, 360, 390, 430, 768, 1024, 1280, 1440px)
+
+- **Thanh tab**: dưới 1024px (điện thoại + tablet) dùng thanh nổi ở đáy; từ 1024px chuyển lên header. 1024–1279px
+  tab chỉ hiện chữ (ẩn icon, ẩn tên người dùng) để 6 tab vừa một hàng.
+- **Số tiền không bao giờ bị cắt**: nhóm chỉ số dùng `StatList` — điện thoại hiện 1 thẻ nhiều hàng (nhãn trái, số
+  phải, `whitespace-nowrap`), từ 640px mới tách thành lưới thẻ. Số trong donut tự giảm cỡ chữ theo độ dài.
+- **Ô nhập ≥ 16px trên di động** (`text-base sm:text-sm`) — dưới 16px iOS sẽ tự phóng to trang khi chạm.
+- **Vùng chạm ≥ 36px** trên di động (nút icon `size-9 sm:size-6`, nút ẩn/hiện mật khẩu, vòng tròn "đã trả").
+- **Nội dung cuối trang** có `padding-bottom` đủ cho thanh tab + nút "Thêm" nổi (11rem + safe-area).
+- **Màn thấp** (`short:` = cao < 700px, VD iPhone SE): bảng nhập thu gọn bàn phím số và khoảng cách.
+- Popup bám theo cả hàng trên di động (`inset-x-0`), chỉ bám theo nút từ 640px — tránh tràn mép phải.
+
 ## Colors
 
 - **Primary (hồng, hue 354)** chỉ dùng cho hành động chính, liên kết, trạng thái active và icon nhấn. Chế độ tối

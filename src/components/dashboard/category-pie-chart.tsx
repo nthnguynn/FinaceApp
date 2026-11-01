@@ -29,6 +29,9 @@ export function CategoryPieChart({
   const items = isExpense ? categoryExpenses : categoryIncomes;
   const total = isExpense ? totalExpense : totalIncome;
   const top = items[0];
+  const totalText = formatVND(total);
+  // Số càng dài chữ càng nhỏ để vừa lòng donut (không cắt mất số)
+  const totalSize = totalText.length > 14 ? "text-base" : totalText.length > 11 ? "text-lg" : "text-xl";
 
   // Donut bằng conic-gradient (không cần thư viện biểu đồ)
   let cumulative = 0;
@@ -57,7 +60,7 @@ export function CategoryPieChart({
                   aria-checked={activeType === type}
                   onClick={() => setActiveType(type)}
                   className={cn(
-                    "rounded-full px-3 py-1.5 transition-colors cursor-pointer",
+                    "rounded-full px-3.5 py-2 transition-colors cursor-pointer sm:py-1.5",
                     activeType === type
                       ? type === "EXPENSE"
                         ? "bg-card text-rose-600 shadow-xs dark:text-rose-400"
@@ -80,7 +83,7 @@ export function CategoryPieChart({
                 <span className="text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground">
                   Tổng {isExpense ? "chi" : "thu"}
                 </span>
-                <span className="mt-1 max-w-36 truncate text-xl font-extrabold tracking-tight">{formatVND(total)}</span>
+                <span className={cn("mt-1 whitespace-nowrap font-extrabold tracking-tight", totalSize)}>{totalText}</span>
               </div>
             </div>
           </div>
@@ -88,7 +91,7 @@ export function CategoryPieChart({
 
         {/* Thẻ nhỏ + danh sách */}
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 min-[400px]:grid-cols-2">
             <div className="rounded-3xl border border-border bg-muted/50 p-4">
               <p className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                 <span className="flex size-7 items-center justify-center rounded-lg bg-card text-primary">
@@ -134,11 +137,14 @@ export function CategoryPieChart({
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block truncate text-sm font-bold">{item.categoryName}</span>
-                          <span className="block text-xs text-muted-foreground">{item.transactionCount} giao dịch</span>
+                          <span className="block text-xs text-muted-foreground">
+                            {item.transactionCount} giao dịch
+                            <span className="sm:hidden"> · {item.percentage}%</span>
+                          </span>
                         </span>
-                        <span className="text-sm font-extrabold">{formatVND(item.totalAmount)}</span>
+                        <span className="shrink-0 whitespace-nowrap text-sm font-extrabold">{formatVND(item.totalAmount)}</span>
                         <span
-                          className="w-14 shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-bold text-foreground/80"
+                          className="hidden w-14 shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-bold text-foreground/80 sm:block"
                           style={{ backgroundColor: `${item.color}24` }}
                         >
                           {item.percentage}%

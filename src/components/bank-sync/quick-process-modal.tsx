@@ -340,7 +340,7 @@ export function QuickProcessModal({
                 <Input
                   id="approve-note"
                   placeholder="Nhập ghi chú (Tùy chọn)"
-                  className="pl-10 text-sm"
+                  className="pl-10 text-base sm:text-sm"
                   {...register("note")}
                 />
               </div>

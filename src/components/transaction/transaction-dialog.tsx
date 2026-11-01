@@ -149,7 +149,7 @@ export function TransactionDialog({
           className="relative flex max-h-[94dvh] w-full flex-col overflow-hidden rounded-t-[2rem] bg-card text-card-foreground shadow-2xl animate-sheet-up sm:max-h-[90dvh] sm:max-w-md sm:rounded-[2rem] sm:animate-in sm:fade-in-0 sm:zoom-in-95"
         >
           <form onSubmit={handleSubmit(onSubmit)} className="flex min-h-0 flex-1 flex-col">
-            <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 pb-4 pt-5 sm:px-6">
+            <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain px-5 pb-4 pt-5 short:space-y-3.5 short:pb-3 short:pt-4 sm:px-6">
               {/* Tiêu đề */}
               <div className="flex items-center justify-between gap-3">
                 <h2 id="transaction-sheet-title" className="text-xl font-extrabold tracking-tight">
@@ -201,7 +201,7 @@ export function TransactionDialog({
                 </label>
                 <div
                   className={cn(
-                    "flex items-center gap-2 rounded-2xl border-2 bg-background px-4 py-3 transition-colors focus-within:border-primary",
+                    "flex items-center gap-2 rounded-2xl border-2 bg-background px-4 py-3 transition-colors focus-within:border-primary short:py-2",
                     errors.amount ? "border-destructive" : "border-foreground/70"
                   )}
                 >
@@ -306,8 +306,8 @@ export function TransactionDialog({
             </div>
 
             {/* Bàn phím số + Lưu */}
-            <div className="shrink-0 space-y-3 rounded-t-[1.75rem] bg-muted/60 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 sm:px-6">
-              <div className="grid grid-cols-3 gap-2">
+            <div className="shrink-0 space-y-3 rounded-t-[1.75rem] bg-muted/60 px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4 short:space-y-2 short:pb-[max(0.75rem,env(safe-area-inset-bottom))] short:pt-2.5 sm:px-6">
+              <div className="grid grid-cols-3 gap-2 short:gap-1.5">
                 {KEYPAD.map((key) => (
                   <button
                     key={key}
@@ -315,7 +315,7 @@ export function TransactionDialog({
                     onClick={() => pressKey(key)}
                     disabled={loading}
                     aria-label={key === "back" ? "Xóa số cuối" : undefined}
-                    className="flex h-12 items-center justify-center rounded-xl bg-card text-lg font-bold shadow-xs transition-transform active:scale-95 cursor-pointer"
+                    className="flex h-12 items-center justify-center rounded-xl bg-card text-lg font-bold shadow-xs transition-transform active:scale-95 short:h-10 cursor-pointer"
                   >
                     {key === "back" ? <Delete className="size-5 text-rose-500" /> : key}
                   </button>
@@ -324,7 +324,7 @@ export function TransactionDialog({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-hero text-base font-bold text-hero-foreground shadow-lg transition-opacity hover:opacity-95 disabled:opacity-70 cursor-pointer"
+                className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-hero text-base font-bold text-hero-foreground shadow-lg transition-opacity hover:opacity-95 disabled:opacity-70 short:h-12 cursor-pointer"
               >
                 {loading ? (
                   <>

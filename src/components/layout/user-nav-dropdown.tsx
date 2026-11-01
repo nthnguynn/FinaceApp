@@ -37,7 +37,7 @@ export function UserNavDropdown({ userName = "Người dùng" }: UserNavDropdown
         <div className="h-8 w-8 rounded-full bg-primary/20 text-primary font-bold text-sm flex items-center justify-center border border-primary/30">
           {initialLetter}
         </div>
-        <span className="text-sm font-semibold text-foreground max-w-30 truncate hidden sm:inline-block">
+        <span className="text-sm font-semibold text-foreground max-w-30 truncate hidden xl:inline-block">
           {userName}
         </span>
         <ChevronDown

@@ -13,6 +13,7 @@ import { usePendingTransactions } from "@/components/bank-sync/pending-transacti
 import { MonthSwitcher } from "@/components/ui/month-switcher";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionLabel } from "@/components/ui/section-label";
+import { StatList } from "@/components/ui/stat-list";
 import { getCategoryIcon } from "@/lib/category-icons";
 import { daysInMonth, monthRange, shiftMonth, toVNDate, VNDate, weekdayName } from "@/lib/date-vn";
 import { cn, formatVND } from "@/lib/utils";
@@ -167,7 +168,7 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
             <button
               type="button"
               onClick={() => openAdd(selectedDay)}
-              className="hidden h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/25 hover:bg-primary/90 md:inline-flex cursor-pointer"
+              className="hidden h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-bold text-primary-foreground shadow-md shadow-primary/25 hover:bg-primary/90 lg:inline-flex cursor-pointer"
             >
               <Plus className="size-4" /> Thêm giao dịch
             </button>
@@ -180,7 +181,7 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
         <div className="space-y-5">
           <section aria-label="Số dư khả dụng" className="relative overflow-hidden rounded-[1.75rem] bg-hero p-5 text-hero-foreground shadow-lg sm:p-6">
             {/* Hình trang trí góc phải (không đè lên nội dung) */}
-            <div aria-hidden className="pointer-events-none absolute right-4 top-4 sm:right-6 sm:top-5">
+            <div aria-hidden className="pointer-events-none absolute right-4 top-4 hidden min-[380px]:block sm:right-6 sm:top-5">
               <div className="flex size-20 rotate-6 items-center justify-center rounded-3xl bg-white/10 sm:size-24">
                 <CalendarHeart className="size-10 text-pink-200 sm:size-12" strokeWidth={1.5} />
               </div>
@@ -201,7 +202,7 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
                 <Pencil className="size-3.5" />
               </Link>
             </div>
-            <p className="relative mt-3 pr-24 text-3xl font-extrabold tracking-tight sm:pr-28 sm:text-4xl">{formatVND(balance)}</p>
+            <p className="relative mt-3 whitespace-nowrap text-[clamp(1.6rem,8.5vw,2.25rem)] font-extrabold tracking-tight min-[380px]:pr-24 sm:pr-28">{formatVND(balance)}</p>
             <p className="relative mt-5 flex items-start gap-2 rounded-2xl bg-black/20 px-3 py-2 text-sm leading-snug">
               <Lightbulb className="mt-0.5 size-4 shrink-0 text-amber-300" aria-hidden />
               {spendingTip(totalIncome, totalExpense)}
@@ -265,16 +266,13 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
             )}
           </section>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-3xl border border-border bg-card p-4 shadow-xs">
-              <p className="text-sm font-semibold text-muted-foreground">Thu tháng {view.month}</p>
-              <p className="mt-1 truncate text-lg font-extrabold text-emerald-600 dark:text-emerald-400">+{formatVND(totalIncome)}</p>
-            </div>
-            <div className="rounded-3xl border border-border bg-card p-4 shadow-xs">
-              <p className="text-sm font-semibold text-muted-foreground">Chi tháng {view.month}</p>
-              <p className="mt-1 truncate text-lg font-extrabold text-rose-600 dark:text-rose-400">-{formatVND(totalExpense)}</p>
-            </div>
-          </div>
+          <StatList
+            columns={2}
+            items={[
+              { label: `Thu tháng ${view.month}`, value: `+${formatVND(totalIncome)}`, tone: "text-emerald-600 dark:text-emerald-400" },
+              { label: `Chi tháng ${view.month}`, value: `-${formatVND(totalExpense)}`, tone: "text-rose-600 dark:text-rose-400" },
+            ]}
+          />
 
           {pendingCount > 0 && (
             <Link
@@ -294,10 +292,10 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
 
           <section aria-labelledby="upcoming-bills-title" className="rounded-[1.75rem] border border-border bg-card p-5 shadow-xs">
             <div className="flex items-center justify-between gap-3">
-              <SectionLabel icon={ReceiptText} as="h2">
+              <SectionLabel icon={ReceiptText} as="h2" className="min-w-0">
                 <span id="upcoming-bills-title">Hóa đơn chưa trả</span>
               </SectionLabel>
-              <Link href="/bills" className="text-sm font-bold text-primary hover:underline">
+              <Link href="/bills" className="-my-2 shrink-0 whitespace-nowrap py-2 text-sm font-bold text-primary hover:underline">
                 Xem tất cả
               </Link>
             </div>
@@ -317,12 +315,12 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
                         <span className="mt-0.5 text-[9px] font-bold uppercase text-muted-foreground">Thg {view.month}</span>
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate text-sm font-bold">{bill.name}</span>
+                        <span className="line-clamp-2 text-sm font-bold leading-snug">{bill.name}</span>
                         <span className={cn("block text-xs", late ? "font-semibold text-rose-600 dark:text-rose-400" : "text-muted-foreground")}>
                           {late ? "Quá hạn" : isCurrentMonth && day === today.day ? "Đến hạn hôm nay" : `Hạn ${day}/${view.month}`}
                         </span>
                       </span>
-                      <span className="shrink-0 text-sm font-extrabold">{formatVND(bill.amount)}</span>
+                      <span className="shrink-0 whitespace-nowrap text-sm font-extrabold">{formatVND(bill.amount)}</span>
                     </li>
                   );
                 })}
@@ -346,7 +344,7 @@ export function CalendarHome({ userName, today, initialData, initialCategories }
       <button
         type="button"
         onClick={() => openAdd(selectedDay)}
-        className="fixed bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-hero px-5 text-base font-bold text-hero-foreground shadow-xl md:hidden cursor-pointer"
+        className="fixed bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] right-4 z-40 inline-flex h-14 items-center gap-2 rounded-full bg-hero px-5 text-base font-bold text-hero-foreground shadow-xl lg:hidden cursor-pointer"
       >
         <Plus className="size-5" /> Thêm
       </button>
@@ -435,7 +433,7 @@ function DayDetail({ year, month, day, transactions, totals, onAdd, onEdit }: Da
                   </span>
                   <span
                     className={cn(
-                      "shrink-0 text-sm font-extrabold",
+                      "shrink-0 whitespace-nowrap text-sm font-extrabold",
                       income ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                     )}
                   >

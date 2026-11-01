@@ -163,13 +163,13 @@ export function TransactionFilter({
           placeholder="Tìm kiếm theo ghi chú, số tiền"
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="pl-8.5 pr-7 bg-muted/40 border-border/60 rounded-xl focus-visible:ring-primary/20 text-xs font-medium h-8.5 w-full"
+          className="pl-8.5 pr-9 bg-muted/40 border-border/60 rounded-xl focus-visible:ring-primary/20 text-base sm:text-xs font-medium h-10 sm:h-8.5 w-full"
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => onSearchChange("")}
-            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer"
+            className="absolute right-1 top-1/2 -translate-y-1/2 flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer sm:size-6"
           >
             <X className="h-3 w-3" />
           </button>
@@ -183,7 +183,7 @@ export function TransactionFilter({
           <button
             type="button"
             onClick={() => onTypeChange("ALL")}
-            className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`px-1.5 sm:px-3 py-2 sm:py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer ${
               typeFilter === "ALL"
                 ? "bg-primary text-primary-foreground shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -194,7 +194,7 @@ export function TransactionFilter({
           <button
             type="button"
             onClick={() => onTypeChange("EXPENSE")}
-            className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`px-1.5 sm:px-3 py-2 sm:py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer ${
               typeFilter === "EXPENSE"
                 ? "bg-rose-500 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -205,7 +205,7 @@ export function TransactionFilter({
           <button
             type="button"
             onClick={() => onTypeChange("INCOME")}
-            className={`px-2 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`px-1.5 sm:px-3 py-2 sm:py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer ${
               typeFilter === "INCOME"
                 ? "bg-emerald-500 text-white shadow-xs"
                 : "text-muted-foreground hover:text-foreground"
@@ -216,7 +216,7 @@ export function TransactionFilter({
         </div>
 
         {/* Hàng 2 Dropdown (Lưới 2 cột chia đôi 50-50 trên di động) */}
-        <div className="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto">
+        <div className="grid grid-cols-1 sm:flex items-center gap-2 w-full sm:w-auto">
           {/* Custom Category Dropdown Popover */}
           <div className="relative w-full sm:w-auto" ref={categoryDropdownRef}>
             <button
@@ -225,7 +225,7 @@ export function TransactionFilter({
                 setIsCategoryOpen(!isCategoryOpen);
                 setIsDateOpen(false);
               }}
-              className="flex items-center justify-between gap-1.5 h-8.5 px-3 rounded-xl border border-border/60 bg-muted/40 hover:bg-muted/80 text-xs font-semibold transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:max-w-42.5"
+              className="flex items-center justify-between gap-1.5 h-10 sm:h-8.5 px-3 rounded-xl border border-border/60 bg-muted/40 hover:bg-muted/80 text-xs font-semibold transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:max-w-42.5"
             >
               <div className="flex items-center gap-1.5 truncate">
                 {selectedCategoryObj ? (
@@ -352,7 +352,7 @@ export function TransactionFilter({
                 setIsDateOpen(!isDateOpen);
                 setIsCategoryOpen(false);
               }}
-              className={`flex items-center justify-between gap-1.5 h-8.5 px-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto ${
+              className={`flex items-center justify-between gap-1.5 h-10 sm:h-8.5 px-3 rounded-xl border text-xs font-semibold transition-all cursor-pointer shadow-xs focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto ${
                 hasDateFilter
                   ? "border-primary bg-primary/10 text-primary font-bold"
                   : "border-border/60 bg-muted/40 hover:bg-muted/80 text-foreground"
@@ -372,7 +372,7 @@ export function TransactionFilter({
                     e.stopPropagation();
                     onDateRangeChange(undefined, undefined);
                   }}
-                  className="p-0.5 rounded-md hover:bg-primary/20 text-primary cursor-pointer ml-1 shrink-0"
+                  className="flex size-7 items-center justify-center rounded-md hover:bg-primary/20 text-primary cursor-pointer ml-1 shrink-0 sm:size-5"
                   title="Xóa lọc thời gian"
                 >
                   <X className="h-3 w-3" />

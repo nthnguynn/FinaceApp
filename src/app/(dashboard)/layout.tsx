@@ -18,8 +18,8 @@ export default async function DashboardLayout({
     <PendingTransactionsProvider>
       <div className="relative flex min-h-dvh flex-col bg-background text-foreground selection:bg-primary/20">
         <Navbar userName={session.name} />
-        {/* pb lớn trên di động để nội dung không bị thanh tab nổi che */}
-        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-32 pt-2 sm:px-6 md:pb-12 md:pt-8">
+        {/* pb lớn trên di động để nội dung cuối trang không bị thanh tab + nút "Thêm" nổi che */}
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-2 sm:px-6 lg:pb-12 lg:pt-8">
           {children}
         </main>
       </div>
